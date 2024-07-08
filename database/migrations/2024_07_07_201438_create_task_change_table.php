@@ -15,6 +15,7 @@ class CreateTaskChangeTable extends Migration
     {
         Schema::create('task_change', function (Blueprint $table) {
             $table->id();
+            //$table->foreignId('task_id')->constrained();
             $table->dateTime('change_date', 0);
             $table->longText('change_content');
             $table->timestamps();

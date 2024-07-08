@@ -14,7 +14,8 @@ class CreatePivotTable extends Migration
     public function up()
     {
         Schema::create('pivot', function (Blueprint $table) {
-            $table->id();
+            //$table->foreignId('role_id')->constrained();
+            //$table->foreignId('permission_id')->constrained();
             $table->timestamps();
         });
     }

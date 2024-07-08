@@ -16,6 +16,7 @@ class CreateTaskTable extends Migration
     {
         Schema::create('task', function (Blueprint $table) {
             $table->id();
+            //$table->foreignId('user_id')->constrained();
             $table->string('title', 100);
             $table->longText('description');
             $table->integer('priority');
