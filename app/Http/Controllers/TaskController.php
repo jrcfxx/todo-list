@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Task;
+use App\Models\TaskChange;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
@@ -13,7 +15,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        
+        return Task::all();
     }
 
     /**
@@ -34,7 +36,17 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-       
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'priority' => 'required|integer',
+            'due_date' => 'required|date',
+        ]);
+
+        $task = Task::create($request->all());
+
+        return response()->json($task, 201);
     }
 
     /**
@@ -43,9 +55,9 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Task $task)
     {
-        return $task;
+        return response()->json($task);
     }
 
     /**
@@ -68,7 +80,20 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        
+        // Validação dos dados de entrada
+        $request->validate([
+            'user_id' => 'sometimes|required|exists:users,id',
+            'title' => 'sometimes|required|string|max:255',
+            'description' => 'sometimes|required|string',
+            'priority' => 'sometimes|required|integer',
+            'due_date' => 'sometimes|required|date',
+            'completeness_date' => 'sometimes|nullable|date',
+            'delete_date' => 'sometimes|nullable|date',
+        ]);  
+
+        $task->update($request->all());
+
+        return response()->json($task);
     }
 
     /**
@@ -77,8 +102,10 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Task $task)
     {
-       
+        $task->update(['delete_date' => now()]);
+
+        return response()->json(['message' => 'Task marked as deleted.']);
     }
 }

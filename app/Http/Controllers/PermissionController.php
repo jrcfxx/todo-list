@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Permission;
 use Illuminate\Http\Request;
 
 class PermissionController extends Controller
@@ -13,7 +14,7 @@ class PermissionController extends Controller
      */
     public function index()
     {
-       
+        return Permission::all();
     }
 
     /**
@@ -34,7 +35,12 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|unique:permissions',
+            'description' => 'required',
+        ]);
+
+         return Permission::create($request->all());
     }
 
     /**
@@ -43,9 +49,9 @@ class PermissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Permission $permission)
     {
-        
+        return $permission;
     }
 
     /**
@@ -66,9 +72,16 @@ class PermissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Permission $permission)
     {
-        //
+        $request->validate([
+            'name' => 'sometimes|required|unique:permissions,name,' . $permission->id,
+            'description' => 'required',
+        ]);
+
+        $permission->update($request->all());
+
+        return $permission;
     }
 
     /**
@@ -79,6 +92,7 @@ class PermissionController extends Controller
      */
     public function destroy($id)
     {
-       
+        $permission->delete();
+        return response()->json(null, 204);
     }
 }
