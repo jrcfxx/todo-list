@@ -13,7 +13,7 @@ class TaskChangeController extends Controller
      */
     public function index()
     {
-       
+        return TaskChange::all();
     }
 
     /**
@@ -45,7 +45,7 @@ class TaskChangeController extends Controller
      */
     public function show($id)
     {
-       
+        return $taskchange;
     }
 
     /**
