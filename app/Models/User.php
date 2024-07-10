@@ -14,17 +14,6 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    public function task(): HasMany
-    {
-        return $this->hasMany(Task::class);
-    }
-
-    public function role(): BelongsTo
-    {
-        return $this->belongsTo(Role::class);
-    }
-
-
     /**
      * The attributes that are mass assignable.
      *
@@ -54,4 +43,17 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    /*  This function defines a one-to-many relationship - One user can have many tasks*/
+    public function tasks(): HasMany
+    {
+        return $this->hasMany(Task::class);
+    }
+
+    /*  This function defines that a User is associated with one specific Role  */
+    public function role(): BelongsTo
+    {
+        return $this->belongsTo(Role::class);
+    }
 }

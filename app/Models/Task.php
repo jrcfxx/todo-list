@@ -11,11 +11,13 @@ class Task extends Model
 {
     use HasFactory;
 
+    /*  This function defines a one-to-many relationship - One task can have many taskchanges*/
     public function taskchanges(): HasMany
     {
         return $this->hasMany(TaskChange::class);
     }
 
+    /*  This function defines that a Task is associated with one specific User  */
     public function user()
     {
         return $this->belongsTo(User::class);

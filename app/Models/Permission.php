@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Permission extends Model
 {
+
+    /*  This function defines a many-to-many relationship - Many Roles can have many Permissions*/
     public function roles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class, 'role_permission', 'permission_id', 'role_id');
