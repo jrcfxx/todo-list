@@ -36,11 +36,17 @@ class PermissionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:permissions',
+            'name' => 'required|unique:permission',
             'description' => 'required',
         ]);
 
-         return Permission::create($request->all());
+         return Permission::create([
+            'name' => $request->name,
+            'description' => $request->description,
+         ]);
+
+
+        return response()->json($permission, 201);
     }
 
     /**
@@ -75,13 +81,13 @@ class PermissionController extends Controller
     public function update(Request $request, Permission $permission)
     {
         $request->validate([
-            'name' => 'sometimes|required|unique:permissions,name,' . $permission->id,
+            'name' => 'sometimes|required|unique:permission,name,' . $permission->id,
             'description' => 'required',
         ]);
 
         $permission->update($request->all());
 
-        return $permission;
+        return response()->json($permission, 200);
     }
 
     /**
@@ -90,7 +96,7 @@ class PermissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Permission $permission)
     {
         $permission->delete();
         return response()->json(null, 204);
