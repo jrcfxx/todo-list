@@ -10,7 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class User extends Authenticatable
+class Users extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -23,6 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role_id',
     ];
 
     /**
@@ -44,14 +45,17 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-
-    /*  This function defines a one-to-many relationship - One user can have many tasks*/
+    /**
+     * One-to-Many relationship: One user can have many tasks.
+     */
     public function tasks(): HasMany
     {
         return $this->hasMany(Task::class);
     }
 
-    /*  This function defines that a User is associated with one specific Role  */
+    /**
+     * Many-to-One relationship: A user belongs to one specific role.
+     */
     public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class);

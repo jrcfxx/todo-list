@@ -18,6 +18,11 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RoleTableSeeder::class,
             PermissionTableSeeder::class,
+            RolePermissionTableSeeder::class,
+            UsersTableSeeder::class,
+            TaskTableSeeder::class,
+            TaskChangeTableSeeder::class,
+            
         ]);
     }
 }

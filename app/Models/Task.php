@@ -18,8 +18,8 @@ class Task extends Model
     }
 
     /*  This function defines that a Task is associated with one specific User  */
-    public function user()
+    public function users()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Users::class);
     }
 }

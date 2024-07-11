@@ -19,6 +19,6 @@ class Role extends Model
     /*  This function defines a one-to-many relationship - One Role can have many Users*/
     public function users(): HasMany
     {
-        return $this->hasMany(User::class);
+        return $this->hasMany(Users::class);
     }
 }
