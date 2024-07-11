@@ -42,6 +42,8 @@ class TaskController extends Controller
             'description' => 'required|string',
             'priority' => 'required|integer',
             'due_date' => 'required|date',
+            'completeness_date' => 'sometimes|nullable|date',
+            'delete_date' => 'sometimes|nullable|date',
         ]);
 
         $task = Task::create($request->all());
@@ -80,7 +82,6 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        // Validação dos dados de entrada
         $request->validate([
             'user_id' => 'sometimes|required|exists:users,id',
             'title' => 'sometimes|required|string|max:255',
@@ -90,6 +91,7 @@ class TaskController extends Controller
             'completeness_date' => 'sometimes|nullable|date',
             'delete_date' => 'sometimes|nullable|date',
         ]);  
+        
 
         $task->update($request->all());
 

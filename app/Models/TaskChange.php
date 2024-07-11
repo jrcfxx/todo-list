@@ -10,6 +10,26 @@ class TaskChange extends Model
 {
     use HasFactory;
 
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'task_change';
+
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'task_id',
+        'change_date',
+        'change_content',
+    ];
+
     /*  This function defines that a TaskChange is associated with one specific Task  */
     public function task()
     {

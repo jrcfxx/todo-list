@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TaskChange;
 use Illuminate\Http\Request;
 
 class TaskChangeController extends Controller
@@ -34,7 +35,20 @@ class TaskChangeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'task_id' => 'sometimes|required|exists:task,id',
+            'change_date' => 'required|date',
+            'change_content' => 'required',
+        ]);
+
+         return TaskChange::create([
+            'task_id' => $request->name,
+            'change_date' => $request->change_date,
+            'change_content' => $request->change_content,
+         ]);
+
+
+        return response()->json($taskchange, 201);
     }
 
     /**
@@ -43,9 +57,9 @@ class TaskChangeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Task $taskchange)
     {
-        return $taskchange;
+        return response()->json($taskchange);
     }
 
     /**
@@ -66,9 +80,17 @@ class TaskChangeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, TaskChange $taskchange)
     {
-        //
+        $request->validate([
+            'task_id' => 'sometimes|required|exists:task,id',
+            'change_date' => 'required|date',
+            'change_content' => 'required',
+        ]);  
+
+        $taskchange->update($request->all());
+
+        return response()->json($taskchange);
     }
 
     /**
@@ -77,8 +99,9 @@ class TaskChangeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Task $taskchange)
     {
-        //
+        $taskchange->update(['change_date' => now()]);
+        return response()->json(null, 204);
     }
 }
