@@ -11,6 +11,29 @@ class Task extends Model
 {
     use HasFactory;
 
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'task';
+
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'user_id',
+        'title',
+        'description',
+        'priority',
+        'due_date',
+        'completeness_date',
+        'delete_date',
+    ];
+
     /*  This function defines a one-to-many relationship - One task can have many taskchanges*/
     public function taskchanges(): HasMany
     {
