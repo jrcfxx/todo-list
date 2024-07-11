@@ -36,10 +36,16 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:roles',
+            'name' => 'required|unique:role',
             'description' => 'required',
         ]);
-        return Role::create($request->all());
+
+        $role = Role::create([
+            'name' => $request->name,
+            'description' => $request->description,
+        ]);
+
+        return response()->json($role, 201);
     }
 
     /**
@@ -74,13 +80,13 @@ class RoleController extends Controller
     public function update(Request $request, Role $role)
     {
         $request->validate([
-            'name' => 'sometimes|required|unique:roles,name,' . $role->id,
+            'name' => 'sometimes|required|unique:role,name,' . $role->id,
             'description' => 'required',
         ]);
 
         $role->update($request->all());
 
-        return $role;
+        return response()->json($role, 200);
     }
 
     /**

@@ -31,14 +31,14 @@ class AddForeignKeysToTables extends Migration
             if (!Schema::hasColumn('users', 'role_id')) {
                 $table->unsignedBigInteger('role_id')->after('id');
             }
-            $table->foreign('role_id')->references('id')->on('roles');
+            $table->foreign('role_id')->references('id')->on('role');
         });
 
         Schema::table('pivot', function (Blueprint $table) {
             if (!Schema::hasColumn('pivot', 'role_id')) {
                 $table->unsignedBigInteger('role_id');
             }
-            $table->foreign('role_id')->references('id')->on('roles');
+            $table->foreign('role_id')->references('id')->on('role');
             
             if (!Schema::hasColumn('pivot', 'permission_id')) {
                 $table->unsignedBigInteger('permission_id');

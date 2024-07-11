@@ -83,7 +83,6 @@ class UsersController extends Controller
      */
     public function update(Request $request, Users $user)
     {
-        // Validação dos dados de entrada
         $request->validate([
             'name' => 'sometimes|required',
             'email' => 'sometimes|required|email|unique:users,email,' . $users->id, 

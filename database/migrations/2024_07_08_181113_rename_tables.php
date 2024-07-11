@@ -15,7 +15,6 @@ class RenameTables extends Migration
     {
         Schema::rename('pivot', 'role_permission');
 
-        Schema::rename('roles', 'role');
     }
 
     /**
@@ -26,6 +25,5 @@ class RenameTables extends Migration
     public function down()
     {
         Schema::rename('role_permission', 'pivot');
-        Schema::rename('role', 'roles');
     }
 }
