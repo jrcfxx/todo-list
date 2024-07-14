@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Users; 
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class UsersController extends Controller
@@ -14,7 +14,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        return Users::all();
+        return User::all();
     }
 
     /**
@@ -37,15 +37,15 @@ class UsersController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'email' => 'required|email|unique:users', 
+            'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
             'role_id' => 'required|exists:role,id',
         ]);
 
-        $user = Users::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => bcrypt($request->password), 
+            'password' => bcrypt($request->password),
             'role_id' => $request->role_id,
         ]);
 
@@ -55,10 +55,10 @@ class UsersController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Users  $users
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(Users $user)
+    public function show(User $user)
     {
         return $user;
     }
@@ -78,19 +78,18 @@ class UsersController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Users  $users
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Users $user)
+    public function update(Request $request, User $user)
     {
         $request->validate([
             'name' => 'sometimes|required',
-            'email' => 'sometimes|required|email|unique:users,email,' . $user->id, 
+            'email' => 'sometimes|required|email|unique:users,email,' . $user->id,
             'password' => 'sometimes|required|min:6',
             'role_id' => 'sometimes|required|exists:role,id',
         ]);
 
-        
         $user->update($request->all());
 
         return response()->json($user, 200);
@@ -99,10 +98,10 @@ class UsersController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Users  $users
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Users $user)
+    public function destroy(User $user)
     {
         $user->delete();
         return response()->json(null, 204);
