@@ -23,17 +23,14 @@ use App\Http\Controllers\AuthController;
 */
 
 // public routes
-Route::post('register', [AuthController::class, 'register']);
+Route::post('/register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 
 // grouping routes protected with auth:sanctum middleware
-
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
     
     Route::apiResource('users', UsersController::class);
-    Route::apiResource('role', RoleController::class);
-    Route::apiResource('permission', PermissionController::class);
     Route::apiResource('task', TaskController::class);
     Route::apiResource('task_change', TaskChangeController::class)->only(['index', 'show']);
 });
