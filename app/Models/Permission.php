@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Permission extends Model
 {
-    use HasFactory;
-
     /**
      * The table associated with the model.
      *
