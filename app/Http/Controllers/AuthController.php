@@ -6,19 +6,21 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
     public function register(Request $request)
     {
+        // Validate the request 
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
-            'role_id' => 'required|exists:roles,id',
+            'role_id' => 'required|exists:role,id',
         ]);
 
-        /* Creates a new user in the users table with the provided data, hashing the password before storing it. */
+        // Creates a new user in the users table with the provided data, hashing the password before storing it. 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -26,7 +28,7 @@ class AuthController extends Controller
             'role_id' => $request->role_id,
         ]);
 
-        /* Creates an authentication token for the newly created user. */
+        // Creates creates a new token instance for the user. 
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
@@ -36,36 +38,37 @@ class AuthController extends Controller
     }
 
     public function login(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string',
-        ]);
+{
 
-        if (!Auth::attempt($request->only('email', 'password'))) {
-            return response()->json([
-                'message' => 'Unauthorized'
-            ], 401);
-        }
+    // Validate the request 
+    $request->validate([
+        'email' => 'required|string|email',
+        'password' => 'required|string',
+    ]);
 
+    // Search for a user in the database whose email address matches the one provided in the request.
+    $user = User::where('email', $request->email)->first();
 
-        /* authenticate the user with the provided credentials.
-         if it fails, returns a JSON response with a message of 'Unauthorized' and status 401  */
-        $user = User::where('email', $request['email'])-    
-
-        /* retrieves the user with the provided email. If not found, throws an error.  */
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        return response()->json([
-            'access_token' => $token,
-            'token_type' => 'Bearer',
+    // Check if the user was found and if the provided password matches the stored password.
+    if (! $user || ! Hash::check($request->password, $user->password)) {
+        // If not, throw a validation exception with an error message.
+        throw ValidationException::withMessages([
+            'email' => ['The provided credentials are incorrect.'],
         ]);
     }
+
+    // Create an authentication token for the user.
+    // 'authToken' - name of the token.
+    // 'plainTextToken' is the generated token in plain text.
+    $token = $user->createToken('authToken')->plainTextToken;
+
+    return response()->json(['token' => $token], 200);
+}
 
     public function logout(Request $request)
     {
 
-        /* Deletes the user's current access token, logging them out. */
+        // Deletes the user's current access token, logging them out.
         $request->user()->currentAccessToken()->delete();
 
         return response()->json([

@@ -22,15 +22,39 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-// public routes
+// Public routes
 Route::post('/register', [AuthController::class, 'register']);
-Route::post('login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login']);
 
-// grouping routes protected with auth:sanctum middleware
+
+// Grouping routes protected with auth:sanctum middleware
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('logout', [AuthController::class, 'logout']);
-    
-    Route::apiResource('users', UsersController::class);
-    Route::apiResource('task', TaskController::class);
-    Route::apiResource('task_change', TaskChangeController::class)->only(['index', 'show']);
-});
+    Route::post('/logout', [AuthController::class, 'logout']);
+
+    // Users routes
+    // restful - put -> recolocar obj naquele id, obj inteiro / patch - mais simples, atualizar só o que foi enviado
+    Route::get('/users', [UsersController::class, 'index']);
+    Route::post('/users', [UsersController::class, 'store']);
+    Route::get('/users/{user}', [UsersController::class, 'show']);
+    Route::put('/users/{user}', [UsersController::class, 'update']);
+    Route::delete('/users/{user}', [UsersController::class, 'destroy']);
+
+    // Role routes
+    Route::get('/role', [TaskController::class, 'index']);
+    Route::post('/role', [TaskController::class, 'store']);
+    Route::get('/role/{role}', [TaskController::class, 'show']);
+    Route::put('/role/{role}', [TaskController::class, 'update']);
+    Route::delete('/role/{role}', [TaskController::class, 'destroy']);
+
+    // Task routes
+    Route::get('/tasks', [TaskController::class, 'index']);
+    Route::post('/tasks', [TaskController::class, 'store']);
+    Route::get('/tasks/{task}', [TaskController::class, 'show']);
+    Route::put('/tasks/{task}', [TaskController::class, 'update']);
+    Route::delete('/tasks/{task}', [TaskController::class, 'destroy']);
+
+    // TaskChange routes
+    Route::get('/task_changes', [TaskChangeController::class, 'index']);
+    Route::get('/task_changes/{taskChange}', [TaskChangeController::class, 'show']);
+
+    });
