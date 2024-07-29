@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -74,5 +75,23 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'Successfully logged out'
         ]);
+    }
+
+    // Directly checks the sessions table to ensure that the token is valid
+    public function getUserInfo(Request $request)
+    {
+        $token = $request->bearerToken();
+
+        // Checking if the token is in Sessions table
+        $session = Session::where('token', $token)->first();
+
+        if (!$session) {
+            return response()->json(['error' => 'Token inválido'], 401);
+        }
+
+        // Return user info
+        $user = User::find($session->user_id);
+
+        return response()->json($user);
     }
 }

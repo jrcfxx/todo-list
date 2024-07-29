@@ -17,7 +17,7 @@ class Role extends Model
      *
      * @var string
      */
-    protected $table = 'role';
+    protected $table = 'roles';
 
     /**
      * The attributes that are mass assignable.
@@ -29,7 +29,7 @@ class Role extends Model
     /*  This function defines a many-to-many relationship - Many Roles can have many Permissions*/
     public function permissions(): BelongsToMany
     {
-        return $this->belongsToMany(Permission::class, 'role_permission', 'role_id', 'permission_id');
+        return $this->belongsToMany(Permission::class,'role_id', 'permission_id');
     }
     
     /*  This function defines a one-to-many relationship - One Role can have many Users*/

@@ -26,6 +26,7 @@ use App\Http\Controllers\AuthController;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
+Route::middleware('auth:sanctum')->get('/getuserinfo', [AuthController::class, 'getUserInfo']);
 
 // Grouping routes protected with auth:sanctum middleware
 Route::middleware('auth:sanctum')->group(function () {

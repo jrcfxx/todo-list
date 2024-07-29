@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Permission;
+use App\Models\Permissions;
 use Illuminate\Http\Request;
 
 class PermissionController extends Controller
@@ -36,7 +36,7 @@ class PermissionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:permission',
+            'name' => 'required|unique:permissions',
             'description' => 'required',
         ]);
 
@@ -81,7 +81,7 @@ class PermissionController extends Controller
     public function update(Request $request, Permission $permission)
     {
         $request->validate([
-            'name' => 'sometimes|required|unique:permission,name,' . $permission->id,
+            'name' => 'sometimes|required|unique:permissions,name,' . $permission->id,
             'description' => 'required',
         ]);
 
