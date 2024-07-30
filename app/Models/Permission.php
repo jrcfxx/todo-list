@@ -5,8 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Spatie\Permission\Models\Permission as SpatiePermission;
 
-class Permission extends Model
+// Roles and permissions templates should extend the templates provided by the Laravel Permission package (SpatieRole and SpatiePermission)
+class Permission extends SpatiePermission
 {
     use HasFactory;
 
@@ -15,7 +17,7 @@ class Permission extends Model
      *
      * @var string
      */
-    protected $table = 'permission';
+    protected $table = 'permissions';
 
 
     /**
@@ -29,9 +31,10 @@ class Permission extends Model
     ];
 
 
-    /*  This function defines a many-to-many relationship - Many Roles can have many Permissions*/
-    public function roles(): BelongsToMany
-    {
-        return $this->belongsToMany(Role::class, 'role_permission', 'permission_id', 'role_id');
-    }
+    // without specifying pivot columns manually, as the Laravel Permission package already manages this.
+     /*  This function defines a many-to-many relationship - Many Permissions can belong to many Roles */
+     public function roles(): BelongsToMany
+     {
+         return $this->belongsToMany(Role::class);
+     }
 }

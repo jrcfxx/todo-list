@@ -33,29 +33,53 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
     // Users routes
-    // restful - put -> recolocar obj naquele id, obj inteiro / patch - mais simples, atualizar só o que foi enviado
-    Route::get('/users', [UsersController::class, 'index']);
-    Route::post('/users', [UsersController::class, 'store']);
-    Route::get('/users/{user}', [UsersController::class, 'show']);
-    Route::put('/users/{user}', [UsersController::class, 'update']);
-    Route::delete('/users/{user}', [UsersController::class, 'destroy']);
+    Route::group(['middleware' => ['permission:view-users']], function () {
+        Route::get('/users', [UsersController::class, 'index']);
+        Route::get('/users/{user}', [UsersController::class, 'show']);
+    });
+    Route::group(['middleware' => ['permission:create-users']], function () {
+        Route::post('/users', [UsersController::class, 'store']);
+    });
+    Route::group(['middleware' => ['permission:edit-users']], function () {
+        Route::put('/users/{user}', [UsersController::class, 'update']);
+    });
+    Route::group(['middleware' => ['permission:delete-users']], function () {
+        Route::delete('/users/{user}', [UsersController::class, 'destroy']);
+    });
 
-    // Role routes
-    Route::get('/role', [TaskController::class, 'index']);
-    Route::post('/role', [TaskController::class, 'store']);
-    Route::get('/role/{role}', [TaskController::class, 'show']);
-    Route::put('/role/{role}', [TaskController::class, 'update']);
-    Route::delete('/role/{role}', [TaskController::class, 'destroy']);
+    // Roles routes
+    Route::group(['middleware' => ['permission:view-roles']], function () {
+        Route::get('/role', [RoleController::class, 'index']);
+        Route::get('/role/{role}', [RoleController::class, 'show']);
+    });
+    Route::group(['middleware' => ['permission:create-roles']], function () {
+        Route::post('/role', [RoleController::class, 'store']);
+    });
+    Route::group(['middleware' => ['permission:edit-roles']], function () {
+        Route::put('/role/{role}', [RoleController::class, 'update']);
+    });
+    Route::group(['middleware' => ['permission:delete-roles']], function () {
+        Route::delete('/role/{role}', [RoleController::class, 'destroy']);
+    });
 
     // Task routes
-    Route::get('/tasks', [TaskController::class, 'index']);
-    Route::post('/tasks', [TaskController::class, 'store']);
-    Route::get('/tasks/{task}', [TaskController::class, 'show']);
-    Route::put('/tasks/{task}', [TaskController::class, 'update']);
-    Route::delete('/tasks/{task}', [TaskController::class, 'destroy']);
+    Route::group(['middleware' => ['permission:view-tasks']], function () {
+        Route::get('/tasks', [TaskController::class, 'index']);
+        Route::get('/tasks/{task}', [TaskController::class, 'show']);
+    });
+    Route::group(['middleware' => ['permission:create-tasks']], function () {
+        Route::post('/tasks', [TaskController::class, 'store']);
+    });
+    Route::group(['middleware' => ['permission:edit-tasks']], function () {
+        Route::put('/tasks/{task}', [TaskController::class, 'update']);
+    });
+    Route::group(['middleware' => ['permission:delete-tasks']], function () {
+        Route::delete('/tasks/{task}', [TaskController::class, 'destroy']);
+    });
 
     // TaskChange routes
-    Route::get('/task_changes', [TaskChangeController::class, 'index']);
-    Route::get('/task_changes/{taskChange}', [TaskChangeController::class, 'show']);
-
+    Route::group(['middleware' => ['permission:view-taskchanges']], function () {
+        Route::get('/task_changes', [TaskChangeController::class, 'index']);
+        Route::get('/task_changes/{taskChange}', [TaskChangeController::class, 'show']);
     });
+});

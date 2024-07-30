@@ -26,13 +26,6 @@ class AddForeignKeysToTables extends Migration
             }
             $table->foreign('task_id')->references('id')->on('task');
         });
-
-         Schema::table('users', function (Blueprint $table) {
-            if (!Schema::hasColumn('users', 'role_id')) {
-                $table->unsignedBigInteger('role_id')->after('id');
-            }
-            $table->foreign('role_id')->references('id')->on('roles');
-        });
     }
 
     /**
@@ -51,18 +44,5 @@ class AddForeignKeysToTables extends Migration
             $table->dropForeign(['task_id']);
             $table->dropColumn('task_id');
         });
-
-        /*Schema::table('users', function (Blueprint $table) {
-            $table->dropForeign(['role_id']);
-            $table->dropColumn('role_id');
-        });
-
-        Schema::table('pivot', function (Blueprint $table) {
-            $table->dropForeign(['role_id']);
-            $table->dropColumn('role_id');
-            
-            $table->dropForeign(['permission_id']);
-            $table->dropColumn('permission_id');
-        });*/
     }
 }

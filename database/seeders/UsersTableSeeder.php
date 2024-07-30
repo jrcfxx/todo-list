@@ -20,9 +20,8 @@ class UsersTableSeeder extends Seeder
         $timestamp = Carbon::now();
         
         DB::table('users')->insert([
-        [
+        /*[
             'id' => 1,
-            'role_id' => 1,
             'name' => Str::random(10),
             'email' => Str::random(10).'@example.com',
             'password' => Hash::make('password'),
@@ -31,7 +30,6 @@ class UsersTableSeeder extends Seeder
         ],
         [
             'id' => 2,
-            'role_id' => 2,
             'name' => Str::random(10),
             'email' => Str::random(10).'@example.com',
             'password' => Hash::make('password'),
@@ -40,13 +38,12 @@ class UsersTableSeeder extends Seeder
         ],
         [
             'id' => 3,
-            'role_id' => 3,
             'name' => Str::random(10),
             'email' => Str::random(10).'@example.com',
             'password' => Hash::make('password'),
             'created_at' => $timestamp,
             'updated_at' => $timestamp,
-        ],
+        ],*/
         ]);
     }
 }

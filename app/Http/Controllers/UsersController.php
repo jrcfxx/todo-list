@@ -39,7 +39,7 @@ class UsersController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
-            'role_id' => 'required|exists:role,id',
+            'role_id' => 'required|exists:roles,id',
         ]);
 
         $user = User::create([
@@ -87,7 +87,7 @@ class UsersController extends Controller
             'name' => 'sometimes|required',
             'email' => 'sometimes|required|email|unique:users,email,' . $user->id,
             'password' => 'sometimes|required|min:6',
-            'role_id' => 'sometimes|required|exists:role,id',
+            'role_id' => 'sometimes|required|exists:roles,id',
         ]);
 
         $user->update($request->all());
