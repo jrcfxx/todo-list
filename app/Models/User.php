@@ -9,10 +9,11 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -23,7 +24,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role_id',
     ];
 
     /**
@@ -53,11 +53,4 @@ class User extends Authenticatable
         return $this->hasMany(Task::class);
     }
 
-    /**
-     * Many-to-One relationship: A user belongs to one specific role.
-     */
-    public function role(): BelongsTo
-    {
-        return $this->belongsTo(Role::class);
-    }
 }
